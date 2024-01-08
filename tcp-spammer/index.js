@@ -20,7 +20,7 @@ function spam() {
     process.stdout.write(`[T${globalThis.thread}] #${i} Request\n`)
     i++
     let datetime = Date.now().toString(11).repeat(16900)
-    client.write(crypto.createHash('sha256', datetime).toString())
+    client.write(crypto.createHash('sha256', datetime).toString().repeat(5000))
   }, argv["i"] | 0.001)
 }
 
