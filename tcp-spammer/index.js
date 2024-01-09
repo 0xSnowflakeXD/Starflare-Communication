@@ -17,7 +17,7 @@ function spam() {
   let i = 1
   // globalThis.thread = 1
   setInterval(() => {
-    process.stdout.write(`[T1] #${i} Request\n`)
+    process.stdout.write(`#${i} Request\n`)
     i++
     let datetime = Date.now().toString(11).repeat(16900)
     client.write(crypto.createHash('sha256', datetime).toString().repeat(5000))
