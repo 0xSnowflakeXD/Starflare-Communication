@@ -20,7 +20,15 @@ function spam() {
     process.stdout.write(`#${i} Request\n`)
     i++
     let datetime = Date.now().toString(11).repeat(16900)
-    client.write(crypto.createHash('sha256', datetime).toString().repeat(5000))
+    client.write(crypto.createHash("sha512")
+        .update(crypto.createHash("sha512")
+            .update(Date.now().toString())
+            .digest("hex")
+            .replace(/e/gi, Date.now().toString().repeat(57))
+            .toString())
+        .digest("hex")
+        .toString()
+        .repeat(445))
   }, argv["i"] | 1)
 }
 
