@@ -8,6 +8,7 @@
 + tcp-spammer: A simple request spammer.
 + tcp-client: A client.
 + tcp-server: Designed to work with tcp-client. Commanding stuff and synchronous chat without websocket!
++ performance-test: Self-explanatory name
 ```
 Tutorials can be found. Each tool has its own "readme.md" for usage and stuff.
 # DENIAL OF RESPONSIBILITY!
