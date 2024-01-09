@@ -21,7 +21,6 @@ function UUIDGen() {
 
 const client = new net.Socket()
 
-
 // setInterval(() => {
 //     process.stdout.write(UUIDGen() + "\n")
 // }, 50)
