@@ -48,8 +48,6 @@ function UUIDGen() {
     return uuid.join('-')
 }
 
-const client = new net.Socket()
-
 // setInterval(() => {
 //     process.stdout.write(UUIDGen() + "\n")
 // }, 1)
