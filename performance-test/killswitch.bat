@@ -1,0 +1,3 @@
+@echo off
+echo Killing...
+taskkill /f /fi "WINDOWTITLE eq Lagg" /im "node.exe"

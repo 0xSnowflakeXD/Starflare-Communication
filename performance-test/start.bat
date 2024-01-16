@@ -1,2 +1,2 @@
 @echo off
-start node .
+start "Lagg" node .
