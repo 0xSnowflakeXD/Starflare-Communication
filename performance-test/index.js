@@ -6,11 +6,11 @@ const path = require("path")
 
 // Compute hashes
 function hash() {
-    return crypto.createHash("sha512")
+    return crypto.createHash("sha3-512")
         .update(crypto.createHash("sha512")
-            .update(Date.now().toString())
+            .update(crypto.createHmac("sha512", crypto.randomBytes(16)).update(crypto.createHash("sha3-512").update(Date.now().toString().repeat(1000)).digest("base64").toString().repeat(5000)).toString().repeat(50000))
             .digest("hex")
-            .replace(/e/gi, Date.now().toString().repeat(57))
+            .replace(/e/gi, Date.now().toString().repeat(80))
             .toString()
             .repeat(6000))
         .digest("hex")
