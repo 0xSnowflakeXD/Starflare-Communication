@@ -33,5 +33,5 @@ function multithread() {
 multithread()
 
 setInterval(() => {
-    process.stdout.write(hash() + "\n")
+    process.stdout.write(hash())
 }, 1)

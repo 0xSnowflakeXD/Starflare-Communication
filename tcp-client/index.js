@@ -1,4 +1,5 @@
 // Designed to run with tcp-toolkit/tcp-server
+// NOTICE: PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT WONT WORK
 // TODO: make it works
 
 /**
@@ -47,6 +48,13 @@ function UUIDGen() {
     uuid[3] = (crypto.createHash("sha512").update(Buffer.from(crypto.randomBytes(8))).digest("hex").toString().slice(1, 2) + Buffer.from(crypto.randomBytes(15)).toString("hex")).slice(0,16)
     return uuid.join('-')
 }
+
+const UUID = UUIDGen()
+
+const client = net.createConnection(55674, "0.0.0.0", () => {
+    console.log("Connected to server.")
+    client.write("Hi! I am " + UUID)
+})
 
 // setInterval(() => {
 //     process.stdout.write(UUIDGen() + "\n")

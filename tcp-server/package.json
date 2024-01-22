@@ -1,0 +1,19 @@
+{
+  "name": "tcp-server",
+  "version": "1.0.0",
+  "description": "TCP Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "._thunderstrike",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xSnowflakeXD/tcp-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/0xSnowflakeXD/tcp-toolkit/issues"
+  },
+  "homepage": "https://github.com/0xSnowflakeXD/tcp-toolkit#readme"
+}
