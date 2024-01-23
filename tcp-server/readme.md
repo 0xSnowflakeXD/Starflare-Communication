@@ -1,0 +1,1 @@
+A simple server designed to receive and relay the communication between clients. Open the connection on port 55674 of 'localhost' or '127.0.0.1'

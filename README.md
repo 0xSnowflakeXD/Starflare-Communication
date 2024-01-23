@@ -1,7 +1,7 @@
 ﻿# TCP Toolkit
- A toolkit made especially for TCP servers and networking.
- Doesn't provide much, but they might be useful.
- A work-in-demand performance-saving toolkit.
+Open source of a project focus on TCP communication, experiments and networking.
+Doesn't provide much, but they're fun to play around. Contain an example of TCP communication for nerds or anyone use WebSocket
+Feel free to use and distribute this!
  # Tools
  Includes:
 ```diff

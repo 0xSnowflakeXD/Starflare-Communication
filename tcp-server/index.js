@@ -13,16 +13,18 @@ if(!fs.existsSync(path.resolve('./cfg.json'))) {
     fs.appendFileSync(path.resolve('./cfg.json'), JSON.stringify({backlog: 256, port: 55674}))
 }
 const options = require('./cfg.json')
+const conns = []
 
 const server = net.createServer()
 server.on("connection", (socket) => {
+    conns.push(socket)
     socket.setKeepAlive(5000)
-    socket.setTimeout(5000)
     socket.setNoDelay(true)
     socket.allowHalfOpen = true
     stdout.write("Client connected!" + '\n')
     socket.on("data", (d) => {
         stdout.write(d.toString('utf-8'))
+        conns.forEach(c => {c?.write(d.toString('utf-8'))})
     })
     socket.on("error", (err) => {console.log("An error occured with the client.")})
     socket.on("close", () => {

@@ -52,14 +52,29 @@ function UUIDGen() {
 }
 
 const UUID = UUIDGen()
+var username = ""
+
+// process.stdout.write("Please enter your username: ")
+
+// async function listenInput() {
+//     let data = ''
+//     process.stdin.on('data', (d) => {
+//         data = d
+//     })
+//     return data
+// }
+
+// listenInput()
+//     .then((d) => {
+//         username = d
+//     })
 
 const client = net.createConnection(55674, '127.0.0.1', () => {
     console.log("Connected to server.")
     client.allowHalfOpen = true
     client.setNoDelay(true)
     client.setKeepAlive(5000)
-    client.setTimeout(5000)
-    client.write("Hi! I am " + UUID + '\n')
+    client.write("Hi! I am " + (username || UUID) + '\n')
 })
 
 client.on("timeout", () => {
@@ -80,9 +95,15 @@ client.on("ready", () => {
 client.once("error", (e) => {
     console.log("Something went wrong! The server you're connecting may not be available or there was an error occured during the connection. Please try again!\nPress ctrl+c to exit!")
 })
+client.on("data", (data) => {
+    console.log("[CHAT] " + data.toString("utf-8").replace("[CHAT] ", "").replace("\n", ""))
+})
+
+process.stdin.resume()
 
 process.stdin.on("data", (d) => {
-    client.write("[I'm chatting!] " + d)
+    process.stdout.moveCursor(-d.length, -1)
+    client.write("[CHAT] " + d)
 })
 
 // setInterval(() => {
