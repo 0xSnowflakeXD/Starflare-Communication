@@ -2,7 +2,7 @@
 A simple performance test designed to compute hash in a high frequent and multithreading. Always be improved!
 # Requirement
 - Node (lastest)
-- Windows (For batch files) or Linux (for .sh files)
+- Windows (for batch files)
 # (Possible) Consenquences
 1. May cause the system to freeze, lag, unstable and become unresponsive. Please keep track on this thing using Task Manager. If your system become snail, kill it using killswitch.
 2. If ran in a long time, it may cause some possible damage to the hardware, decreasing the system durability. Please be careful

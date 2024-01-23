@@ -1,6 +1,7 @@
 // TCP Server designed to wirk with 0xSnowflakeXD/tcp-toolkit/tcp-client
 // Who know how it works?
 // I'll provide a wiki soon as i officially release this.
+// Only limited to run on the SAME computer/anything refers to the 127.0.0.1 where the server run
 // NOTICE: tcp-client ONLY PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT'LL CORRUPT!
 
 const net = require('net')
@@ -17,14 +18,14 @@ const server = net.createServer()
 server.on("connection", (socket) => {
     stdout.write("Client connected!" + '\n')
     socket.on("data", (d) => {
-        console.log(d.toString('utf-8'))
+        stdout.write(d.toString('utf-8'))
     })
-    socket.on("end", () => {
-        console.log("Ended connection!")
+    socket.on("error", (err) => {socket.emit("close")})
+    socket.on("close", () => {
+        console.log("Connection closed!")
     })
-    socket.on("error", (err) => {})
 })
 
-server.listen(options.port, '0.0.0.0', options.backlog, () => {
+server.listen(options.port, '127.0.0.1', options.backlog, () => {
     stdout.write('Server started! Listening on ' + server.address().address + ':' + server.address().port + '\n')
 })

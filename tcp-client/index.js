@@ -1,4 +1,5 @@
 // Designed to run with tcp-toolkit/tcp-server
+// Only limited to run on the SAME computer/anything refers to the 127.0.0.1 where the server run
 // NOTICE: PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT WONT WORK
 // TODO: make it works
 
@@ -10,6 +11,7 @@
 
 const crypto = require("crypto")
 const net = require("net")
+const { stdin } = require("process")
 
 class Packet {
     constructor(data, uuid) {
@@ -51,9 +53,13 @@ function UUIDGen() {
 
 const UUID = UUIDGen()
 
-const client = net.createConnection(55674, "0.0.0.0", () => {
+const client = net.createConnection(55674, '127.0.0.1', () => {
     console.log("Connected to server.")
-    client.write("Hi! I am " + UUID)
+    client.write("Hi! I am " + UUID + '\n')
+})
+
+process.stdin.on("data", (d) => {
+    client.write("[I'm chatting!] " + d)
 })
 
 // setInterval(() => {
