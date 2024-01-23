@@ -16,11 +16,15 @@ const options = require('./cfg.json')
 
 const server = net.createServer()
 server.on("connection", (socket) => {
+    socket.setKeepAlive(5000)
+    socket.setTimeout(5000)
+    socket.setNoDelay(true)
+    socket.allowHalfOpen = true
     stdout.write("Client connected!" + '\n')
     socket.on("data", (d) => {
         stdout.write(d.toString('utf-8'))
     })
-    socket.on("error", (err) => {socket.emit("close")})
+    socket.on("error", (err) => {console.log("An error occured with the client.")})
     socket.on("close", () => {
         console.log("Connection closed!")
     })

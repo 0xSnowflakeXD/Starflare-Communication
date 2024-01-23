@@ -55,9 +55,19 @@ const UUID = UUIDGen()
 
 const client = net.createConnection(55674, '127.0.0.1', () => {
     console.log("Connected to server.")
+    client.allowHalfOpen = true
+    client.setNoDelay(true)
+    client.setKeepAlive(5000)
+    client.setTimeout(5000)
     client.write("Hi! I am " + UUID + '\n')
 })
 
+client.on("timeout", () => {
+    client.end(() => {
+        console.log("Ended connection due to timeout.")
+        client.destroy()
+    })
+})
 client.once("close", () => {
     console.log("The server closed the connection.")
 })
