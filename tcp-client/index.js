@@ -58,6 +58,19 @@ const client = net.createConnection(55674, '127.0.0.1', () => {
     client.write("Hi! I am " + UUID + '\n')
 })
 
+client.once("close", () => {
+    console.log("The server closed the connection.")
+})
+client.once("end", () => {
+    console.log("The server ended the connection.")
+})
+client.on("ready", () => {
+    console.log("Connection ready!")
+})
+client.once("error", (e) => {
+    console.log("Something went wrong! The server you're connecting may not be available or there was an error occured during the connection. Please try again!\nPress ctrl+c to exit!")
+})
+
 process.stdin.on("data", (d) => {
     client.write("[I'm chatting!] " + d)
 })
