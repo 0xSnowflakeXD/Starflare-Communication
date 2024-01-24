@@ -3,44 +3,9 @@
 // NOTICE: PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT WONT WORK
 // TODO: make it works
 
-/**
- * Packet params
- * @param message<String>
- * @param author<AuthorInstance>
- */
-
 const crypto = require("crypto")
 const net = require("net")
 const { stdin } = require("process")
-
-class Packet {
-    constructor(data, uuid) {
-        if(typeof data !== 'object' || !(data instanceof Object)) {
-            throw new TypeError("Data")
-        }
-        this.data = data
-        this.uuid = uuid
-        return this
-    }
-}
-class AuthorInstance {
-    constructor(uuid, name) {
-        this.uuid = uuid
-        this.name = name
-        return this
-    }
-}
-
-class Message extends Packet {
-    constructor(content, name, uuid) {
-        super(data)
-        this.author = new AuthorInstance()
-        this.content = content.replace(/\\.{1}/gmi, "")
-        this._content = content
-
-        data = {}
-    }
-}
 
 function UUIDGen() {
     let uuid = [,,,,]
@@ -93,7 +58,7 @@ client.on("ready", () => {
     console.log("Connection ready!")
 })
 client.once("error", (e) => {
-    console.log("Something went wrong! The server you're connecting may not be available or there was an error occured during the connection. Please try again!\nPress ctrl+c to exit!")
+    console.log("We can't reach to the destination server. Please try again!\nPress ctrl+c to exit!")
 })
 client.on("data", (data) => {
     console.log("[CHAT] " + data.toString("utf-8").replace("[CHAT] ", "").replace("\n", ""))

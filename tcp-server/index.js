@@ -1,6 +1,5 @@
 // TCP Server designed to wirk with 0xSnowflakeXD/tcp-toolkit/tcp-client
-// Who know how it works?
-// I'll provide a wiki soon as i officially release this.
+// Used built-in features. Nice!
 // Only limited to run on the SAME computer/anything refers to the 127.0.0.1 where the server run
 // NOTICE: tcp-client ONLY PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT'LL CORRUPT!
 
@@ -29,6 +28,7 @@ server.on("connection", (socket) => {
     socket.on("error", (err) => {console.log("An error occured with the client.")})
     socket.on("close", () => {
         console.log("Connection closed!")
+
     })
 })
 
