@@ -1,7 +1,7 @@
 ﻿# TCP Toolkit
-Open source of a project focus on TCP communication, experiments and networking.
-Doesn't provide much, but they're fun to play around. Contain an example of TCP communication for nerds or anyone use WebSocket
-Feel free to use and distribute this!
+Open source of a project focus on TCP communication, experiments and networking.<br>
+Doesn't provide much, but they're fun to play around. Contain an example of TCP communication for nerds or anyone use WebSocket<br>
+Feel free to use and distribute this!<br>
  # Tools
  Includes:
 ```diff
