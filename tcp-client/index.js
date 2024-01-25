@@ -9,9 +9,9 @@ const { stdin } = require("process")
 
 function UUIDGen() {
     let uuid = [,,,,]
-    uuid[0] = crypto.createHash("sha256").update(Date.now().toString()).digest("hex").toString().slice(0, 16)
-    uuid[1] = Buffer.from(crypto.randomBytes(8)).toString("hex").slice(0, 8)
-    uuid[2] = (Buffer.from("12c-").toString("hex").slice(1, 3) + crypto.createHash("sha256").update(crypto.randomBytes(8)).digest("hex").toString()).slice(0, 8)
+    uuid[0] = crypto.createHash("sha256").update(Date.now().toString()).digest("hex").toString().slice(0, 8)
+    uuid[1] = Buffer.from(crypto.randomBytes(8)).toString("hex").slice(0, 4)
+    uuid[2] = (Buffer.from("12c-").toString("hex").slice(1, 3) + crypto.createHash("sha256").update(crypto.randomBytes(8)).digest("hex").toString()).slice(0, 4)
     uuid[3] = (crypto.createHash("sha512").update(Buffer.from(crypto.randomBytes(8))).digest("hex").toString().slice(1, 2) + Buffer.from(crypto.randomBytes(15)).toString("hex")).slice(0,16)
     return uuid.join('-')
 }
