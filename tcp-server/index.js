@@ -32,6 +32,6 @@ server.on("connection", (socket) => {
     })
 })
 
-server.listen(options.port, '127.0.0.1', options.backlog, () => {
+server.listen(options.port, '76cbaa6e-844f-467d-9a00-87a76f99ddf2-00-3a3vg6vnzkc5x.riker.replit.dev', options.backlog, () => {
     stdout.write('Server started! Listening on ' + server.address().address + ':' + server.address().port + '\n')
 })
