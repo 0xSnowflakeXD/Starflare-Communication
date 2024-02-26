@@ -2,6 +2,7 @@ const net = require('net');
 const crypto = require("crypto")
 var argv = require('minimist')(process.argv.slice(2), {"--": true});
 
+/*
 if(!argv || !argv["a"]) {
   process.stdout.write(`
 ERROR. Not enough arguments
@@ -11,6 +12,7 @@ ERROR. Not enough arguments
 -i <ms>   | Request interval. OPTIONAL
 `)
 }
+*/
 
 function spam() {
   console.log('Connected');
@@ -39,7 +41,7 @@ const TARGET = {
 } 
 
 var client = new net.Socket();
-client.connect(TARGET.PORT, TARGET.ADDR, spam);
+client.connect(55674, "0.0.0.0", spam);
 
 client.once('ready', () => {
   console.log("Client Ready!")

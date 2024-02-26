@@ -1,25 +1,32 @@
 // Designed to run with tcp-toolkit/tcp-server
-// Only limited to run on the SAME computer/anything refers to the 127.0.0.1 where the server run
+// Only limited to run on the SAME computer/anything refers to the 0.0.0.0 where the server run
 // NOTICE: PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT WONT WORK
 // TODO: make it works (completed)
 
 const crypto = require("crypto")
 const EventEmitter = require("events")
+const { read } = require("fs")
 const net = require("net")
-const { stdin } = require("process")
+const readline = require("readline")
 const eem = EventEmitter
 
+const rl = readline.createInterface({input: process.stdin, output:process.stdout, prompt: "> "})
+
+/**
+ * Generate UUID with TTELCP protocol standards for the TTELCP client.
+ * Return an UUID for the packet verification stage.
+ * @author NullifiedTheDev
+ * @returns UUID
+ */
 function UUIDGen() {
-    let uuid = [,,,,]
-    uuid[0] = crypto.createHash("sha256").update(Date.now().toString()).digest("hex").toString().slice(0, 8)
-    uuid[1] = Buffer.from(crypto.randomBytes(8)).toString("hex").slice(0, 4)
-    uuid[2] = (Buffer.from("12c-").toString("hex").slice(1, 3) + crypto.createHash("sha256").update(crypto.randomBytes(8)).digest("hex").toString()).slice(0, 4)
-    uuid[3] = (crypto.createHash("sha512").update(Buffer.from(crypto.randomBytes(8))).digest("hex").toString().slice(1, 2) + Buffer.from(crypto.randomBytes(15)).toString("hex")).slice(4,12)
+    let uuid = []
+    uuid.push(crypto.createHash("sha256").update(Date.now().toString()).digest("hex").toString().slice(0, 8))
+    uuid.push(Buffer.from(crypto.randomBytes(8)).toString("hex").slice(0, 4))
+    uuid.push((Buffer.from("12c-").toString("hex").slice(1, 3) + crypto.createHash("sha256").update(crypto.randomBytes(8)).digest("hex").toString()).slice(0, 4))
+    uuid.push((crypto.createHash("sha512").update(Buffer.from(crypto.randomBytes(8))).digest("hex").toString().slice(1, 2) + Buffer.from(crypto.randomBytes(15)).toString("hex")).slice(4,12))
     return uuid.join('-')
 }
-
 const UUID = UUIDGen()
-
 // process.stdout.write("Please enter your username: ")
 
 // async function listenInput() {
@@ -35,12 +42,14 @@ const UUID = UUIDGen()
 //         eem.emit("_r", d)
 //     })
 
-var client
+// SCHEMA:
+// {
+//     uuid: UUID,
+//     content: ""
+// }
 
-client = net.createConnection(55674, '127.0.0.1', () => {
+var client = net.createConnection(55674, '0.0.0.0', () => {
     console.log("Connected to server.")
-    client.allowHalfOpen = true
-    client.setNoDelay(true)
     client.setKeepAlive(5000)
 })
 client.on("timeout", () => {
@@ -57,22 +66,39 @@ client.once("end", () => {
 })
 client.on("ready", () => {
     console.log("Connection ready!")
+    rl.prompt()
 })
 client.once("error", (e) => {
     console.log("We can't reach to the destination server. Please try again!\nPress ctrl+c to exit!")
 })
 client.on("data", (data) => {
-    console.log("[CHAT] " + data.toString("utf-8").toLowerCase().replace('[chat]', "").replace("\n", ""))
+    const str = JSON.parse(data.toString("utf-8").replace(/\n/, "")).content
+    process.stdout.write(str)
 })
+
+if(!process.stdin.isTTY) {
+    throw new Error("FATAL: Terminal is not TTY. Couldn't process input")
+}
+
+/**
+ * Write the payload to client.write()
+ * @param {String} d
+ */
 
 process.stdin.resume()
 
-process.stdin.on("data", (d) => {
-    if(!d || d == '' || d == "\n") {
+rl.on("line", (data) => {
+    if(!data || data == '' || data == "\n") {
         return false
     }
-    process.stdout.moveCursor(-d.length, -1)
-    client.write("[CHAT] " + `[${UUID}] ` + d)
+    const payload = {
+        uuid: UUID,
+        content: data
+    }
+    client.write(`${JSON.stringify(payload)}`)
+    rl.prompt()
+}).on("close", () => {
+    process.exit(0)
 })
 
 // setInterval(() => {
