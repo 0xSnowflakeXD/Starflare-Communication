@@ -41,7 +41,7 @@ const TARGET = {
 } 
 
 var client = new net.Socket();
-client.connect(55674, "0.0.0.0", spam);
+client.connect(TARGET.PORT, TARGET.ADDR, spam);
 
 client.once('ready', () => {
   console.log("Client Ready!")
