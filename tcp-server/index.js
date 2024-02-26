@@ -45,7 +45,7 @@ server.on("connection", (socket) => {
                 let UUIDValidateRegEx = /([a-f]|[0-9]){8}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){8}/gm
                 if(UUIDValidateRegEx.test(JSON.parse(d.toString("utf-8")).uuid)) {
                     conns.forEach(c => {
-                        stdout.write(d.toString('utf-8'))
+                        stdout.write(d.toString('utf-8') + "\n")
                         c.write(d.toString('utf-8'))
                     })
                 }

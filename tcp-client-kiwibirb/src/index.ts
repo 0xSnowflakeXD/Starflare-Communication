@@ -3,6 +3,9 @@
 // NOTICE: PARTIALLY WORK WITH tcp-server UNTOUCHED! PLEASE DON'T CHANGE THE SERVER PORT OTHERWISE IT WONT WORK
 // Kiwibirb rewrite this in TS
 // Irreversible damage-
+
+// NOT TESTED!
+// May render incompatible with TTELCP packet verification system, and come along with an improper UUID generator. Not recommended using this.
 // TODO: make it works (completed)
 const crypto = require("crypto")
 const { read } = require("fs")
@@ -179,7 +182,7 @@ function make_uuid () {
 ;(async function mainnnnnne () {
     // Check TTY.
     if (!stdin.isTTY) {
-        error("Standard input is not a TTY.");
+        error("STDIN isn't TTY");
         exit(1);
     }
     // ReadLine API.
