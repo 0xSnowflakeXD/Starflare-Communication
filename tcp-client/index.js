@@ -21,6 +21,7 @@ try {
     const net = require("net")
     const readline = require("readline")
     const eem = EventEmitter
+    const {strfde: decoder, strfe: encoder} = require("../lib-strfucker/lib-strfucker")
 
     const rl = readline.createInterface({input: process.stdin, output:process.stdout, prompt: "> "})
 
@@ -63,9 +64,9 @@ try {
             if(typeof c !== "string" || typeof u !== "string") {
                 throw new TypeError("Provided content 'c' or UUID 'u' isn't a string.")
             }
-            this.header = "MSG"
-            this.content = c.toString()
-            this.uuid = u.toString()
+            this.header = encoder("MSG")
+            this.content = encoder(c.toString())
+            this.uuid = encoder(u.toString())
         }
     }
     /**
@@ -103,8 +104,6 @@ try {
             this.socket = net.createConnection(55674, '0.0.0.0', () => {
                 console.log("Connected to server.")
                 this.socket.setKeepAlive(5000)
-                let con = new CON(this.UUID)
-                this.send(con)
             })
             this.socket.on("timeout", () => {
                 this.socket.end(() => {
@@ -126,16 +125,17 @@ try {
          * @returns Object of the Payload under parsed form in JSON
          */
         parse(payload) {
-            if(!payload instanceof Payload || !payload instanceof CON) { // Check if it is Payload or not.
+            let decoded = JSON.parse(decoder(payload))
+            if(!decoder(payload) instanceof Payload || !decoder(payload) instanceof CON) { // Check if it is Payload or not.
                 throw new TypeError("Payload isn't an instance of Payload or CON. Received " + payload + " instanceof " + (payload.constructor.name || "<unknown>"))
             }
-            if(payload instanceof CON) {   
+            if(decoded instanceof CON) {   
                 return {header: payload.header, uuid: payload.uuid}
             }
-            if(!payload.content || typeof payload.content !== "string" || typeof payload.content === "object" || !payload.uuid|| typeof payload.uuid !== "string") {
+            if(!decoded.content || typeof decoded.content !== "string" || typeof decoded.content === "object" || !decoded.uuid|| typeof decoded.uuid !== "string") {
                 throw new Error("Payload isn't a valid Payload or CON payload. Received " + payload)
             }
-            return {header: payload.header, content: payload.content, uuid: payload.uuid}
+            return {header: decoded.header, content: decoded.content, uuid: decoded.uuid}
         }
         /**
          * Parse provided payload then send.
@@ -147,10 +147,6 @@ try {
         send(payload) {
             return void new Promise((res, rej) => {
                 try {
-                    if(payload instanceof CON) {
-                        let payload_ = this.parse(payload)
-                        this.socket.write(JSON.stringify(payload_))
-                    }
                     let payload_ = this.parse(payload)
                     this.socket.write(JSON.stringify(payload_))
                     res(this.socket)
@@ -185,12 +181,10 @@ try {
          * @returns 
          */
         datahandler(input) {
-            if (!input instanceof Buffer) { throw new TypeError("Datahandler can only handle Buffers!") }
-            if (input.toString('utf-8').length < 3 || !input.toString('utf-8').startsWith("{") || !input.toString("utf-8").endsWith("}")) { return false }
             try {
-                return JSON.parse(input.toString("utf-8"))
+                return JSON.parse(decoder(input.toString("utf-8")))
             } catch(e) {
-                return {content: "*Message couldn't be parsed!", uuid: "coffee00-1234-1234-effec100"}
+                return {content: "*Message couldn't be parsed!", uuid: "coffee00-1234-1234-abcdabcd"}
             }
         }
         /**
@@ -249,7 +243,7 @@ try {
             }
             process.stdout.moveCursor(-d.length, -2) // Stay in place, move to the very left
             process.stdout.clearLine() // Clear line
-            clnt.send(pl) // Send payload to the server. It seem to be impossible to send a class, right?
+            clnt.send(encoder(pl)) // Send payload to the server. It seem to be impossible to send a class, right?
         })
     })();
 } catch(e) {

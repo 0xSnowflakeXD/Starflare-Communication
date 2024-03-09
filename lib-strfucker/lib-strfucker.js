@@ -31,7 +31,7 @@ module.exports = {
         let s1 = Buffer.from(istr, "hex").toString("utf-8")
         let s2 = Buffer.from(s1, "base64url").toString("utf-8")
         let last = Buffer.from(s2, "hex").toString("utf-8")
-        return last
+        return last.toString()
     },
     /**
      * Decrypts strfucker, remove salt
