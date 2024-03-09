@@ -1,5 +1,6 @@
 const net = require('net');
-const crypto = require("crypto")
+const crypto = require("crypto");
+const { error } = require('console');
 var argv = require('minimist')(process.argv.slice(2), {"--": true});
 
 /*
@@ -37,7 +38,7 @@ function spam() {
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 const TARGET = {
   ADDR: argv["a"],
-  PORT: parseInt(argv["p"]) | 443
+  PORT: parseInt(argv["p"]) || 443
 } 
 
 var client = new net.Socket();
@@ -57,7 +58,10 @@ client.on("data", function(d) {
   console.log("Something happends! " + d)
 })
 
-client.setMaxListeners(50)
+client.on("error", e => {
+  client.connect(TARGET.PORT, TARGET.ADDR, spam)
+})
+client.setMaxListeners(5)
 
 module.exports = {
   client,
