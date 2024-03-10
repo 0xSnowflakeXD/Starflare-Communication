@@ -5,7 +5,7 @@ Feel free to use and distribute this!<br>
  # Tools
  Includes:
 ```diff
-+ tcp-spammer: A simple request spammer.
+- tcp-spammer: A simple request spammer. (Removed due to how wild it is)
 + tcp-client: A client.
 + tcp-server: Designed to work with tcp-client. Commanding stuff and synchronous chat without websocket!
 + lagger: Self-explanatory name
