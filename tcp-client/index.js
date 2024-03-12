@@ -21,7 +21,7 @@ try {
     const net = require("net")
     const readline = require("readline")
     const eem = EventEmitter
-    const {strfde: decoder, strfe: encoder} = require("../lib-strfucker/lib-strfucker")
+    // const {strfde: decoder, strfe: encoder} = require("../lib-strfucker/lib-strfucker")
 
     const rl = readline.createInterface({input: process.stdin, output:process.stdout, prompt: "> "})
 
@@ -64,9 +64,9 @@ try {
             if(typeof c !== "string" || typeof u !== "string") {
                 throw new TypeError("Provided content 'c' or UUID 'u' isn't a string.")
             }
-            this.header = encoder("MSG")
-            this.content = encoder(c.toString())
-            this.uuid = encoder(u.toString())
+            this.header = "MSG"
+            this.content = c.toString()
+            this.uuid = u.toString()
         }
     }
     /**
@@ -125,17 +125,16 @@ try {
          * @returns Object of the Payload under parsed form in JSON
          */
         parse(payload) {
-            let decoded = JSON.parse(decoder(payload))
-            if(!decoder(payload) instanceof Payload || !decoder(payload) instanceof CON) { // Check if it is Payload or not.
+            if(!payload instanceof Payload || !payload instanceof CON) { // Check if it is Payload or not.
                 throw new TypeError("Payload isn't an instance of Payload or CON. Received " + payload + " instanceof " + (payload.constructor.name || "<unknown>"))
             }
-            if(decoded instanceof CON) {   
+            if(payload instanceof CON) {   
                 return {header: payload.header, uuid: payload.uuid}
             }
-            if(!decoded.content || typeof decoded.content !== "string" || typeof decoded.content === "object" || !decoded.uuid|| typeof decoded.uuid !== "string") {
+            if(!payload.content || typeof payload.content !== "string" || typeof payload.content === "object" || !payload.uuid|| typeof payload.uuid !== "string") {
                 throw new Error("Payload isn't a valid Payload or CON payload. Received " + payload)
             }
-            return {header: decoded.header, content: decoded.content, uuid: decoded.uuid}
+            return {header: payload.header, content: payload.content, uuid: payload.uuid}
         }
         /**
          * Parse provided payload then send.
@@ -182,7 +181,7 @@ try {
          */
         datahandler(input) {
             try {
-                return JSON.parse(decoder(input.toString("utf-8")))
+                return JSON.parse(input.toString("utf-8"))
             } catch(e) {
                 return {content: "*Message couldn't be parsed!", uuid: "coffee00-1234-1234-abcdabcd"}
             }
@@ -243,7 +242,7 @@ try {
             }
             process.stdout.moveCursor(-d.length, -2) // Stay in place, move to the very left
             process.stdout.clearLine() // Clear line
-            clnt.send(encoder(pl)) // Send payload to the server. It seem to be impossible to send a class, right?
+            clnt.send(pl) // Send payload to the server. It seem to be impossible to send a class, right?
         })
     })();
 } catch(e) {
