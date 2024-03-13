@@ -26,4 +26,5 @@ Simply follow the tutorials and replace the input file with the `index.js` you h
 
 **Fun fact**: I used pkg to compile my code!
 # Discord server
+Get help, talk,...
 [Discord](https://discord.gg/3BZYcuR3fz)
