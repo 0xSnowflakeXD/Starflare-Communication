@@ -25,3 +25,5 @@ Check pkg usage: https://github.com/vercel/pkg
 Simply follow the tutorials and replace the input file with the `index.js` you have edited. It should work!
 
 **Fun fact**: I used pkg to compile my code!
+# Discord server
+[Discord](https://discord.gg/3BZYcuR3fz)
