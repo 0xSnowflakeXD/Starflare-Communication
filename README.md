@@ -11,5 +11,6 @@ Feel free to use and distribute this!<br>
 + lagger: Self-explanatory name
 ```
 Tutorials can be found. Each tool has its own "readme.md" for usage and stuff.
-# DENIAL OF RESPONSIBILITY!
-I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED FROM THIS TOOLKIT BY ANY FORM OF MISUSE OR ABUSE.
+# Compiling
+Check pkg usage: https://github.com/vercel/pkg
+Simply follow the tutorials and replace the input file with the `index.js` you have edited. It should work!
