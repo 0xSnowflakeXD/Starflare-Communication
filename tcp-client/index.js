@@ -41,7 +41,10 @@ try {
         uuid.push((crypto.createHash("sha512").update(Buffer.from(crypto.randomBytes(8))).digest("hex").toString().slice(1, 2) + Buffer.from(crypto.randomBytes(15)).toString("hex")).slice(4,12))
         return uuid.join('-')
     }
+
+    let NAME = ""
     const UUID = UUIDGen()
+
     /**
      * Not TTY Error. I don't know what's this for
      */
@@ -67,6 +70,7 @@ try {
             this.header = "MSG"
             this.content = c.toString()
             this.uuid = u.toString()
+            this.name = NAME
         }
     }
     /**
@@ -134,7 +138,7 @@ try {
             if(!payload.content || typeof payload.content !== "string" || typeof payload.content === "object" || !payload.uuid|| typeof payload.uuid !== "string") {
                 throw new Error("Payload isn't a valid Payload or CON payload. Received " + payload)
             }
-            return {header: payload.header, content: payload.content, uuid: payload.uuid}
+            return {header: payload.header, content: payload.content, uuid: payload.uuid, name: payload.name}
         }
         /**
          * Parse provided payload then send.
@@ -183,7 +187,7 @@ try {
             try {
                 return JSON.parse(input.toString("utf-8"))
             } catch(e) {
-                return {content: "*Message couldn't be parsed!", uuid: "coffee00-1234-1234-abcdabcd"}
+                return {header: "MSG", content: "*Message couldn't be parsed!", uuid: "coffee00-1234-1234-abcdabcd"}
             }
         }
         /**
@@ -206,7 +210,21 @@ try {
     stdin.resume()
     stdin.setRawMode(false)
 
+    let a = false
     ;(async function main() {
+        /**
+         * Record the username
+         */
+        process.stdout.write("Name?\n")
+        await process.stdin.once("data", async (d) => {
+            NAME = d.toString().trim().slice(0,12)
+            await console.clear()
+            a = true
+            return new Promise((res, rej) => {
+                res(true)
+            })
+        })
+    })().then(_ => {
         process.stdout.clearScreenDown() // Clear screen down
         const clnt = new Client(UUID)
         clnt.getClientInterface().on("data", (d) => {
@@ -214,7 +232,7 @@ try {
                 process.stdout.write(`[CHAT] [<Invalid UUID>] *Message couldn't be displayed.\n`)
             }
             // Print formatted message to screen
-            process.stdout.write(`[CHAT] [${clnt.datahandler(d)?.uuid}] ${clnt.datahandler(d)?.content}\n`)
+            process.stdout.write(`[CHAT] [${clnt.datahandler(d)?.name}] ${clnt.datahandler(d)?.content}\n`)
             // Refresh of course
             process.stdout.clearScreenDown()
         })
@@ -235,6 +253,12 @@ try {
                 })
             })
         process.stdin.on("data", d => {
+            /**
+             * Don't send message while users are thinking for their name
+             */
+            if(a !== true) {
+                return false
+            }
             // New payload
             const pl = new Payload(d.toString("utf-8").trim(), clnt.getUUID())
             if(pl.content === "\u0003") { // If raw mode was true, this is going to be useed
@@ -244,7 +268,7 @@ try {
             process.stdout.clearLine() // Clear line
             clnt.send(pl) // Send payload to the server. It seem to be impossible to send a class, right?
         })
-    })();
+    });
 } catch(e) {
     stdin.setRawMode(true)
     console.log(e)
