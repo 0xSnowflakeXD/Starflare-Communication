@@ -28,3 +28,5 @@ Simply follow the tutorials and replace the input file with the `index.js` you h
 # Discord server
 Get help, talk,...
 [Discord](https://discord.gg/3BZYcuR3fz)
+# Chat toghether!
+![image](https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/af32ca62-f529-4b00-a820-b89068f84de7)
