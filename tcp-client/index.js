@@ -1,3 +1,12 @@
+const crypto = require("crypto")
+const EventEmitter = require("events")
+const { stdin, stdout } = require("process")
+const net = require("net")
+const readline = require("readline")
+const eem = EventEmitter
+const fs = require("fs")
+const path = require("path")
+
 process.on("uncaughtException", (e) => {
     process.stdin.setRawMode(true)
     console.log(e)
@@ -15,17 +24,17 @@ try {
     // Classes based on kiwibirb's idea.
     // TODO: make it works (completed)
 
-    const crypto = require("crypto")
-    const EventEmitter = require("events")
-    const { stdin, stdout } = require("process")
-    const net = require("net")
-    const readline = require("readline")
-    const eem = EventEmitter
     // const {strfde: decoder, strfe: encoder} = require("../lib-strfucker/lib-strfucker")
 
     const rl = readline.createInterface({input: process.stdin, output:process.stdout, prompt: "> "})
 
     process.title = "TCP CLIENT - NullifiedTheDev"
+    
+    if(!fs.existsSync(path.resolve('./cfg.json'))) {
+        fs.appendFileSync(path.resolve('./cfg.json'), JSON.stringify({address: "0.0.0.0", port: 55674}))
+        console.log("Created configuration file %s", path.resolve("./cfg.json"))
+    }
+    const options = require('./cfg.json')
 
     /**
      * Generate UUID with TTELCP protocol standards for the TTELCP client.
@@ -94,6 +103,7 @@ try {
     /**
      * Main class for Client creation & intialization.
      * @extends EventEmitter
+     * @constructor
      */
     class Client extends EventEmitter {
         /**
@@ -105,7 +115,7 @@ try {
         constructor(_UUID) {
             super()
             this.UUID = _UUID || UUIDGen()
-            this.socket = net.createConnection(55674, '0.0.0.0', () => {
+            this.socket = net.createConnection(parseInt(options.port) !== NaN ? parseInt(options.port) : 55674, net.isIP(options.address) ? options.address : "0.0.0.0", () => {
                 console.log("Connected to server.")
                 this.socket.setKeepAlive(5000)
             })
@@ -128,7 +138,7 @@ try {
          * @param {CON} payload
          * @returns Object of the Payload under parsed form in JSON
          */
-        parse(payload) {
+        parse(payload=new Payload("_", UUID)) {
             if(!payload instanceof Payload || !payload instanceof CON) { // Check if it is Payload or not.
                 throw new TypeError("Payload isn't an instance of Payload or CON. Received " + payload + " instanceof " + (payload.constructor.name || "<unknown>"))
             }
@@ -170,12 +180,25 @@ try {
          * @param {string} input 
          * @returns boolean
          */
-        internalVerificator(input) {
+        internalVerificator(input="") {
             let _verfrx = /([a-f]|[0-9]){8}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){8}/gm
             if(_verfrx.test(input)) {
                 return true
             } else {
                 return false
+            }
+        }
+        /**
+         * If your input matches, your name isn't acceptable by TTELCP verification system.
+         * @param {string} input 
+         * @returns 
+         */
+        nameVerificator(input="") {
+            let _verfrx = /[`~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿]+/gmi
+            if(!_verfrx.test(input)) {
+                return false
+            } else {
+                return true
             }
         }
         /**
@@ -191,10 +214,10 @@ try {
             }
         }
         /**
-         * Returns client socket interface.
+         * Returns current (being connected to, at the time called) client socket interface.
          * @returns Socket
          */
-        getClientInterface() {
+        getCurrSocketInterface() {
             return this.socket
         }
     }
@@ -211,23 +234,37 @@ try {
     stdin.setRawMode(false)
 
     let a = false
+
+    // Because of global needs for "clnt", i moved it there
+    const clnt = new Client(UUID)
+
     ;(async function main() {
         /**
          * Record the username
          */
-        process.stdout.write("Name?\n")
-        await process.stdin.once("data", async (d) => {
+        async function listener(d=new Buffer()) {
             NAME = d.toString().trim().slice(0,12)
+            if(clnt.nameVerificator(NAME)) {
+                process.stdout.moveCursor(-d?.length, -2)
+                process.stdout.write("Your username contain disallowed special characters.\n")
+                return;
+            }
             await console.clear()
+            if(d.length > 12) {
+                console.error("\x1b[1;31mWARNING: Truncated your username at 12th character.\x1b[0m")
+                a = false
+            }
             a = true
+            process.stdin.removeListener("data", listener)
             return new Promise((res, rej) => {
                 res(true)
             })
-        })
+        }
+        process.stdout.write("Name?\n")
+        await process.stdin.on("data", listener)
     })().then(_ => {
         process.stdout.clearScreenDown() // Clear screen down
-        const clnt = new Client(UUID)
-        clnt.getClientInterface().on("data", (d) => {
+        clnt.getCurrSocketInterface().on("data", (d) => {
             if(!clnt.internalVerificator(clnt.datahandler(d)?.uuid)) {
                 process.stdout.write(`[CHAT] [<Invalid UUID>] *Message couldn't be displayed.\n`)
             }
