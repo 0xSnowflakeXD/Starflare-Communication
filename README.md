@@ -32,5 +32,4 @@ Get help, talk,...
 Or IRC channel on libera.chat: #ThunderStrike
 # Chat toghether!
 ![image](https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/af32ca62-f529-4b00-a820-b89068f84de7)
-<video src="https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/c76a26e4-37b8-49a7-bb37-ba0a1951ee6a" width="320" height="240" controls></video>
-
+https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/6011a713-761f-4059-9d77-b5315e3e09b6
