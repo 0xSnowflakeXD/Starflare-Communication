@@ -1,1 +1,6 @@
 node_modules
+.github
+.git
+client.exe
+server.exe
+cfg.json
