@@ -24,9 +24,13 @@ Check pkg usage: https://github.com/vercel/pkg
 
 Simply follow the tutorials and replace the input file with the `index.js` you have edited. It should work!
 
-**Fun fact**: I packaged my exes using their tool!
+**Fun fact**: I packed my exes using their tool!
 # Discord server
 Get help, talk,...
 [Discord](https://discord.gg/3BZYcuR3fz)
+
+Or IRC channel on libera.chat: #ThunderStrike
 # Chat toghether!
 ![image](https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/af32ca62-f529-4b00-a820-b89068f84de7)
+<video src="https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/c76a26e4-37b8-49a7-bb37-ba0a1951ee6a" width="320" height="240" controls></video>
+
