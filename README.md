@@ -2,7 +2,7 @@
 > As long as you using this, you need to know that you are the only one who responsible for any possible and potentional damage of misuse or abuse.
 > Please read the license carefully!
 
- # 🔧 TCP Toolkit
+ # 🔧 Starflare Communication
 Open source of a project focus on TCP communication, experiments and networking.<br>
 Doesn't provide much, but they're fun to play around. Contain an example of TCP communication for nerds or anyone use WebSocket<br>
 Feel free to use and distribute this!<br>
