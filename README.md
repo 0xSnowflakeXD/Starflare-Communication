@@ -2,6 +2,8 @@
 > As long as you using this, you need to know that you are the only one who responsible for any possible and potentional damage of misuse or abuse.
 > Please read the license carefully!
 
+![chattin toghether](https://github.com/0xSnowflakeXD/Starflare-Communication/assets/99589107/720dc550-1051-4680-a50f-601cd53a8474)
+
  # 🔧 Starflare Communication
 Open source of a project focus on TCP communication, experiments and networking.<br>
 Doesn't provide much, but they're fun to play around. Contain an example of TCP communication for nerds or anyone use WebSocket<br>
@@ -43,5 +45,4 @@ Get help, talk,...
 
 Or IRC channel on libera.chat: #ThunderStrike
 # 💬 Chat toghether!
-![image](https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/af32ca62-f529-4b00-a820-b89068f84de7)
-https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/6011a713-761f-4059-9d77-b5315e3e09b6
+<video src="https://github.com/0xSnowflakeXD/tcp-toolkit/assets/99589107/6011a713-761f-4059-9d77-b5315e3e09b6"></video>
