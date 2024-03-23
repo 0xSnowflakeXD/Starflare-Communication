@@ -92,7 +92,7 @@ Parsing packets according to TTELCP (TCP Toolkit Exclusively Live Communication 
             // Referrence only!
             try {
                 let data = d.toString("utf-8")
-                let InvalidCharsRegEx = /[`~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿]+/gmi
+                let InvalidCharsRegEx = /[`'"~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿\s]+/gmi
                 let UUIDValidateRegEx = /([a-f]|[0-9]){8}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){8}/gm
                 if(!JSON.parse(data).name || !!InvalidCharsRegEx.test(JSON.parse(data).name) || JSON.parse(data).name.length > 12) {
                     socket.end(() => {console.log("Ended %s", socket.address)})

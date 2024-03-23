@@ -194,7 +194,7 @@ try {
          * @returns 
          */
         nameVerificator(input="") {
-            let _verfrx = /[`~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿]+/gmi
+            let _verfrx = /[`'"~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿\s]+/gmi
             if(!_verfrx.test(input)) {
                 return false
             } else {
@@ -244,8 +244,9 @@ try {
          */
         async function listener(d=new Buffer()) {
             NAME = d.toString().trim().slice(0,12)
-            if(clnt.nameVerificator(NAME)) {
-                process.stdout.moveCursor(-d?.length, -2)
+            if(clnt.nameVerificator(NAME) || NAME.length < 1) {
+                process.stdout.moveCursor(-d?.length, -3)
+                process.stdout.clearScreenDown()
                 process.stdout.write("Your username contain disallowed special characters.\n")
                 return;
             }
@@ -296,6 +297,10 @@ try {
             if(a !== true) {
                 return false
             }
+			if(d.toString().trim().length < 1) {
+                process.stdout.moveCursor(0, -2)
+				return false
+			}
             // New payload
             const pl = new Payload(d.toString("utf-8").trim(), clnt.getUUID())
             if(pl.content === "\u0003") { // If raw mode was true, this is going to be useed
@@ -304,6 +309,12 @@ try {
             process.stdout.moveCursor(-d.length, -2) // Stay in place, move to the very left
             process.stdout.clearLine() // Clear line
             clnt.send(pl) // Send payload to the server. It seem to be impossible to send a class, right?
+        })
+		process.on("beforeExit", (_) => {
+            clnt.getCurrSocketInterface().destroySoon()
+		})
+		process.on("exit", (_) => {
+            clnt.getCurrSocketInterface().destroySoon()
         })
     });
 } catch(e) {

@@ -4,3 +4,4 @@ node_modules
 client.exe
 server.exe
 cfg.json
+.gitignore
