@@ -303,6 +303,7 @@ try {
                 a = false
             }
             a = true
+            process.title = NAME
             process.stdin.removeListener("data", listener)
             return new Promise((res, rej) => {
                 res(true)
