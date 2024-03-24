@@ -7,6 +7,42 @@ const eem = EventEmitter
 const fs = require("fs")
 const path = require("path")
 
+// Version gathering requirements
+const semver = require("semver")
+const axios = require('axios')
+
+// This is the version of the application. DO NOT TOUCH
+const verinfo = {
+    semver: "0.0.4-alpha",
+    name: "Alpha 0.0.4",
+    revd: "3/24/2024 14:23:44 UTC",
+}
+
+;(function () {
+    axios.get('https://api.github.com/repos/0xSnowflakeXD/Starflare-Communication/releases/latest')
+        .then(res => {
+            const gitVer = res.data
+            if(!semver.satisfies(verinfo.semver, `>=${gitVer.tag_name}`)) {
+                console.error(`\x1b[1;31mNEWER VERSION AHEAD!\x1b[0m\n
+    Current: ${verinfo.semver}
+    Up-to-date: ${gitVer.tag_name}
+    `)
+                process.stdout.write("Name: ")
+            } else {
+                console.log("You're using lastest version.")
+                process.stdout.write("Name: ")
+            }
+        })
+}())
+
+// request.get("https://api.github.com/repos/0xSnowflakeXD/Starflare-Communication/releases/latest", {}, (e, res, body) => {
+//     const parsedRes = JSON.parse(res)
+//     console.log(!parsedRes.tag_name)
+//     // semver.lt(verinfo.semver, parsedRes?.tag_name)
+// })
+
+
+
 process.on("uncaughtException", (e) => {
     process.stdin.setRawMode(true)
     console.log(e)
@@ -29,6 +65,12 @@ try {
     const rl = readline.createInterface({input: process.stdin, output:process.stdout, prompt: "> "})
 
     process.title = "TCP CLIENT - NullifiedTheDev"
+
+    console.log(`
+    Version: ${verinfo.semver}
+    Release: ${!!verinfo.name ? verinfo.name : "Not yet released"}
+    Revision date: ${verinfo.revd}
+    `)
     
     if(!fs.existsSync(path.resolve('./cfg.json'))) {
         fs.appendFileSync(path.resolve('./cfg.json'), JSON.stringify({address: "0.0.0.0", port: 55674}))
@@ -238,6 +280,10 @@ try {
     // Because of global needs for "clnt", i moved it there
     const clnt = new Client(UUID)
 
+    let _0x1,
+        _0x2,
+        _0x3
+
     ;(async function main() {
         /**
          * Record the username
@@ -245,9 +291,10 @@ try {
         async function listener(d=new Buffer()) {
             NAME = d.toString().trim().slice(0,12)
             if(clnt.nameVerificator(NAME) || NAME.length < 1) {
-                process.stdout.moveCursor(-d?.length, -3)
+                process.stdout.write("\n\n")
+                process.stdout.moveCursor(-d?.length, -5)
                 process.stdout.clearScreenDown()
-                process.stdout.write("Your username contain disallowed special characters.\n")
+                process.stdout.write("Your username contain disallowed special characters.\nName: ")
                 return;
             }
             await console.clear()
@@ -261,7 +308,6 @@ try {
                 res(true)
             })
         }
-        process.stdout.write("Name?\n")
         await process.stdin.on("data", listener)
     })().then(_ => {
         process.stdout.clearScreenDown() // Clear screen down

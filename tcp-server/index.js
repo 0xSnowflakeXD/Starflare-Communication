@@ -1,4 +1,40 @@
+// Version gathering requirements
+const semver = require("semver")
+const axios = require('axios')
+
+axios.interceptors.request.use((request) => {
+        request.headers.set({
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "https://docs.github.com/api/events"
+        });
+        return request;
+    }
+);
+
+// This is the version of the application. DO NOT TOUCH
+const verinfo = {
+    semver: "0.0.4-alpha",
+    name: "Alpha 0.0.4",
+    revd: "3/24/2024 14:23:44 UTC",
+}
+
+;(function () {
+    axios.get('https://api.github.com/repos/0xSnowflakeXD/Starflare-Communication/releases/latest')
+        .then(res => {
+            const gitVer = res.data
+            if(!semver.satisfies(verinfo.semver, `>=${gitVer.tag_name}`)) {
+                console.error(`\x1b[1;31mNEWER VERSION AHEAD!\x1b[0m\n
+    Current: ${verinfo.semver}
+    Up-to-date: ${gitVer.tag_name}
+    `)
+            } else {
+                console.log("You're using lastest version.")
+            }
+        })
+}())
+
 const { isUtf8 } = require('buffer')
+const {stdin} = require("process")
 
 process.on("uncaughtException", (e) => {
     stdin.setRawMode(true)
@@ -71,6 +107,11 @@ Brought to you like a miracle. (Is it? According to kiwibirb - my best friend an
 Credits to NullifiedTheDev
 
 Parsing packets according to TTELCP (TCP Toolkit Exclusively Live Communication Protocol) standards
+    `)
+    console.log(`
+    Version: ${verinfo.semver}
+    Release: ${!!verinfo.name ? verinfo.name : "Not yet released"}
+    Revision date: ${verinfo.revd}
     `)
 
     if(!fs.existsSync(path.resolve('./cfg.json'))) {
