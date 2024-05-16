@@ -13,8 +13,8 @@ axios.interceptors.request.use((request) => {
 
 // This is the version of the application. DO NOT TOUCH
 const verinfo = {
-    semver: "0.0.4-alpha",
-    name: "Alpha 0.0.4",
+    semver: "0.1.0-alpha",
+    name: "Alpha 0.1.0",
     revd: "3/24/2024 14:23:44 UTC",
 }
 

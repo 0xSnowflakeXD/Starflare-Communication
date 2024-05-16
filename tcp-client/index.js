@@ -13,8 +13,8 @@ const axios = require('axios')
 
 // This is the version of the application. DO NOT TOUCH
 const verinfo = {
-    semver: "0.0.4-alpha",
-    name: "Alpha 0.0.4",
+    semver: "0.1.0-alpha",
+    name: "Alpha 0.1.0",
     revd: "3/24/2024 14:23:44 UTC",
 }
 
@@ -358,10 +358,10 @@ try {
             clnt.send(pl) // Send payload to the server. It seem to be impossible to send a class, right?
         })
 		process.on("beforeExit", (_) => {
-            clnt.getCurrSocketInterface().destroySoon()
+            clnt.getCurrSocketInterface().end()
 		})
 		process.on("exit", (_) => {
-            clnt.getCurrSocketInterface().destroySoon()
+            clnt.getCurrSocketInterface().end()
         })
     });
 } catch(e) {
